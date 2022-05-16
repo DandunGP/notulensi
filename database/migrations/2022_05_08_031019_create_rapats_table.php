@@ -17,8 +17,8 @@ class CreateRapatsTable extends Migration
         Schema::create('rapats', function (Blueprint $table) {
             $table->id('id_rapat');
             $table->foreignIdFor(User::class);
-            $table->longText('id_asn')->NULL();
-            $table->longText('id_non')->NULL();
+            $table->longText('id_asn')->nullable();
+            $table->longText('id_non')->nullable();
             $table->string('tempat');
             $table->string('hari');
             $table->date('tanggal');

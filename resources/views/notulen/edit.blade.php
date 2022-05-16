@@ -10,20 +10,9 @@
 </div>
 
 @foreach ($data as $dd)
-<form method="POST" action="/notulensi/edit/proses/{{ $dd->id_notulensi }}" enctype="multipart/form-data">
+<form method="POST" action="/notulensi/edit/proses/{{ $dd->id_notulen }}" enctype="multipart/form-data">
     @method('put')
     @csrf
-    <div class="mb-3">
-        <label for="role" class="form-label">Username</label>
-        <select class="form-select form-select-sm mb-3" aria-label=".form-select-lg example" name="id_user">
-            <option selected>Pilih Username</option>
-            @foreach ($user as $us)
-            <option value="{{ $us -> id_user }}" @if ($us -> id_user == $dd -> id_user) selected
-
-                @endif >{{ $us->username }}</option>
-            @endforeach
-        </select>
-    </div>
     <div class="mb-3">
         <label for="role" class="form-label">Rapat</label>
         <select class="form-select form-select-sm mb-3" aria-label=".form-select-lg example" name="id_rapat">
@@ -46,18 +35,23 @@
     </div>
     <div class="mb-3">
         <label for="tempat" class="form-label">Isi</label>
-        <input type="text" class="form-control" id="tempat" name="tempat" value="{{ $dd->isi }}">
+        <textarea id="editor" style="height:500px;" name="isi">
+            {{ $dd->isi }}
+        </textarea>
     </div>
     <div class="mb-3">
         <label for="file" class="form-label">File</label>
         <input type="hidden" name="oldFile" value="{{ $dd->file }}">
         @if($dd->file)
-        <br>File lama : {{$dd->file}}
+        <img src="{{ asset('storage/' . $dd->file) }}" class="img-preview d-block mb-4"
+            style="width:200px;height:175px;">
+        @else
+        <img class="img-preview img-fluid mb-4">
         @endif
         <input type="file" class="form-control" id="file" name="file">
     </div>
     <button type="submit" class="btn btn-primary">Ubah</button>
 </form>
 @endforeach
-
+@extends('layouts.preview')
 @endsection

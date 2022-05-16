@@ -11,15 +11,7 @@
 
 <form method="POST" action="/rapat/private/create/proses">
   @csrf
-  <div class="mb-3">
-    <label for="role" class="form-label">Username</label>
-    <select class="form-select form-select-sm mb-3" aria-label=".form-select-lg example" name="user_id">
-      <option selected>Pilih Username</option>
-      @foreach ($username as $user)
-      <option value="{{ $user -> id }}">{{ $user->username }}</option>
-      @endforeach
-    </select>
-  </div>
+  <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
   <div class="mb-3">
     <label for="tempat" class="form-label">Tempat</label>
     <input type="text" class="form-control" id="tempat" name="tempat">

@@ -2,20 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\asn;
 use App\Models\User;
+use App\Models\Hasil;
 use App\Models\Rapat;
+use App\Models\nonasn;
 use App\Models\Notulen;
+use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Storage;
 
 class NotulenController extends Controller
 {
     public function index()
     {
-        $notulen = Notulen::all();
+        $notulen = Notulen::select('*')->where('user_id', '=', auth()->user()->id)->get();
+        $user = User::all();
         return view('notulen.index', compact('notulen'), [
             "title" => "Notulensi",
-            "active" => "Notulensi"
+            "active" => "Notulensi",
+            'user' => $user
         ]);
     }
 
@@ -26,12 +33,39 @@ class NotulenController extends Controller
      */
     public function create()
     {
-        return view('notulen.create', [
-            "rapat" => Rapat::all(),
-            "username" => User::all(), //->where('role', 'NON ASN')
-            "title" => "Notulensi",
-            "active" => "Notulensi"
-        ]);
+        $status = auth()->user()->role;
+        if ($status == 'ASN') {
+            $id_user = auth()->user()->id;
+            $pengguna = asn::where('user_id', '=', $id_user)->first();
+            $rapat = Rapat::select('*')->where('id_asn', 'LIKE', '%' . $pengguna->nama . '%')->get();
+            //$rapat = Rapat::where('id_asn', 'LIKE', '%Deden%')->where('tanggal', '<=', Carbon::now())->get();
+            return view('notulen.create', [
+                "rapat" => $rapat,
+                "username" => User::all(), //->where('role', 'NON ASN')
+                "title" => "Notulensi",
+                "active" => "Notulensi"
+            ]);
+        }
+        if ($status == 'NON ASN') {
+            $id_user = auth()->user()->id;
+            $pengguna = nonasn::where('user_id', '=', $id_user)->first();
+            $rapat = Rapat::select('*')->where('id_non', 'LIKE', '%' . $pengguna->nama . '%')->get();
+            //$rapat = Rapat::where('id_asn', 'LIKE', '%Deden%')->where('tanggal', '<=', Carbon::now())->get();
+            return view('notulen.create', [
+                "rapat" => $rapat,
+                "username" => User::all(), //->where('role', 'NON ASN')
+                "title" => "Notulensi",
+                "active" => "Notulensi"
+            ]);
+        }
+        if ($status == 'Administrator') {
+            return view('notulen.create', [
+                "rapat" => Rapat::all(),
+                "username" => User::all(), //->where('role', 'NON ASN')
+                "title" => "Notulensi",
+                "active" => "Notulensi"
+            ]);
+        }
     }
 
     /**
@@ -66,7 +100,25 @@ class NotulenController extends Controller
         $validateData['jam'] = $data->jam;
         $validateData['keterangan'] = $data->keterangan;
 
-        notulen::create($validateData);
+        if ($validateData['status'] = 'Publish') {
+            $pdf = App::make('dompdf.wrapper');
+            $pdf->loadHtml($validateData['isi']);
+            $path = storage_path('app/public/file-hasil');
+            $fileName = $validateData['keterangan'] . date('dmYhis') . '.' . 'pdf';
+            $pdf->save($path . '/' . $fileName);
+            $path2 = 'file-hasil/' . $fileName;
+            notulen::create($validateData);
+        } else {
+            notulen::create($validateData);
+            return redirect('/notulensi')->with('success', 'pengguna baru berhasil ditambahkan!');
+        }
+        $data2 = Notulen::select('*')->where('file', '=', $validateData['file'])->first();
+        $hasil1 = [
+            'id_rapat' => $validateData['id_rapat'],
+            'id_notulen' => $data2->id_notulen,
+            'notulen' => $path2
+        ];
+        hasil::create($hasil1);
         return redirect('/notulensi')->with('success', 'pengguna baru berhasil ditambahkan!');
     }
 
@@ -116,20 +168,27 @@ class NotulenController extends Controller
         //     $validateData = $request->file;
         // }
 
-        $data = notulen::where('id_notulen', $id_notulensi)->update([
-            'user_id' => $request->user_id,
-            'id_rapat' => $request->id_rapat,
-            'tempat' => $request->tempat,
-            'hari' => $request->hari,
-            'tanggal' => $request->tanggal,
-            'jam' => $request->jam,
-            'keterangan' => $request->keterangan,
-            'isi' => $request->isi,
-            'status' => $request->status,
-            'file' => $request->oldFile
-        ]);
-
-        return redirect('/notulensi');
+        if ($request->file('file')) {
+            if ($request->oldFile) {
+                Storage::delete($request->oldFile);
+            }
+            $file = $request->file('file')->store('file-notulensi');
+            $data = notulen::where('id_notulen', $id_notulensi)->update([
+                'id_rapat' => $request->id_rapat,
+                'isi' => $request->isi,
+                'status' => $request->status,
+                'file' => $file
+            ]);
+            return redirect('/notulensi');
+        } else {
+            $data = notulen::where('id_notulen', $id_notulensi)->update([
+                'id_rapat' => $request->id_rapat,
+                'isi' => $request->isi,
+                'status' => $request->status,
+                'file' => $request->oldFile
+            ]);
+            return redirect('/notulensi');
+        }
     }
 
     /**

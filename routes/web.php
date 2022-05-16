@@ -6,6 +6,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RapatController;
 use App\Http\Controllers\BidangController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\HasilController;
 use App\Http\Controllers\NonasnController;
 use App\Http\Controllers\JabatanController;
 use App\Http\Controllers\InstansiController;
@@ -25,7 +26,7 @@ use App\Http\Controllers\PenggunaController;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->middleware('guest');
 
 
 //PENGGUNA
@@ -36,7 +37,7 @@ Route::get('pengguna/tampil/{id_user}', [PenggunaController::class, 'show'])->mi
 Route::put('pengguna/edit/proses/{id_user}', [PenggunaController::class, 'update'])->middleware('auth', 'cekAdmin');
 Route::delete('pengguna/delete/{id_user}', [PenggunaController::class, 'destroy'])->middleware('auth', 'cekAdmin');
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth');;
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth');
 
 //LOGIN
 Route::get('/login', [LoginController::class, 'index'])->name('login')->middleware('guest');
@@ -106,8 +107,12 @@ Route::delete('bidang/delete/{id_bidang}', [BidangController::class, 'destroy'])
 
 //NOTULENSI
 Route::get('/notulensi', [NotulenController::class, 'index'])->name('notulensi')->middleware('auth');
-Route::get('/notulensi/create', [NotulenController::class, 'create'])->middleware('auth');;
-Route::post('/notulensi/create/proses', [NotulenController::class, 'store'])->middleware('auth');;
-Route::get('notulensi/tampil/{id_notulensi}', [NotulenController::class, 'show'])->middleware('auth');;
-Route::put('notulensi/edit/proses/{id_notulensi}', [NotulenController::class, 'update'])->middleware('auth');;
-Route::delete('notulensi/delete/{id_notulensi}', [NotulenController::class, 'destroy'])->middleware('auth');;
+Route::get('/notulensi/create', [NotulenController::class, 'create'])->middleware('auth');
+Route::post('/notulensi/create/proses', [NotulenController::class, 'store'])->middleware('auth');
+Route::get('notulensi/tampil/{id_notulensi}', [NotulenController::class, 'show'])->middleware('auth');
+Route::put('notulensi/edit/proses/{id_notulensi}', [NotulenController::class, 'update'])->middleware('auth');
+Route::delete('notulensi/delete/{id_notulensi}', [NotulenController::class, 'destroy'])->middleware('auth');
+
+//HASIL
+Route::get('/hasil', [HasilController::class, 'index'])->name('hasil')->middleware('auth');
+Route::get('hasil/download/{id_hasil}', [HasilController::class, 'download'])->name('download')->middleware('auth');

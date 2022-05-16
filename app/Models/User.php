@@ -2,10 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\asn;
+use App\Models\Rapat;
+use App\Models\nonasn;
+use App\Models\Notulen;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {

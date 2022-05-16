@@ -98,11 +98,11 @@ class RapatController extends Controller
             'tanggal' => ['required'],
             'jam' => ['required'],
             'keterangan' => ['required'],
-            'id_asn' => ['required'],
-            'id_non' => ['required']
+            'id_asn' => '',
+            'id_non' => ''
         ]);
-        $validateData['id_asn'] = "NULL";
-        $validateData['id_non'] = "NULL";
+        $validateData['id_asn'] = null;
+        $validateData['id_non'] = null;
         rapat::create($validateData);
         return redirect('/publik')->with('success', 'pengguna baru berhasil ditambahkan!');
     }

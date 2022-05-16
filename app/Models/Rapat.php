@@ -2,13 +2,19 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\asn;
+use App\Models\User;
+use App\Models\nonasn;
+use App\Models\Notulen;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Rapat extends Model
 {
     use HasFactory;
-    protected $guarded = ['id_rapat'];
+    protected $fillable = ([
+        'id_rapat', 'user_id', 'id_asn', 'id_non', 'tempat', 'hari', 'tanggal', 'jam', 'keterangan'
+    ]);
 
     public function users()
     {

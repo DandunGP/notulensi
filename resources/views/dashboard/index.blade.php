@@ -11,65 +11,65 @@
 </div>
 <div class="menu-content d-flex flex-wrap justify-content-center py-5">
   <a href="/pengguna" class="text-decoration-none">
-    <div class="card text-dark mx-3 my-2 d-flex flex-column justify-content-center position-relative">
+    <div class="card text-light bg-primary mx-3 my-2 d-flex flex-column justify-content-center position-relative">
       <h4 class="card-title ps-3">Pengguna</h4>
-      <h4 class="text-muted ps-3">{{ $pengguna }}</h4>
+      <h4 class="text-light ps-3">{{ $pengguna }}</h4>
       <i class="fa-solid fa-user position-absolute logo-content"></i>
     </div>
   </a>
   <a href="/asn" class="text-decoration-none">
-    <div class="card text-dark mx-3 my-2 d-flex flex-column justify-content-center position-relative">
+    <div class="card text-light bg-primary mx-3 my-2 d-flex flex-column justify-content-center position-relative">
       <h4 class="card-title ps-3">ASN</h4>
-      <h4 class="text-muted ps-3">{{ $asn }}</h4>
+      <h4 class="text-light ps-3">{{ $asn }}</h4>
       <i class="fa-solid fa-users position-absolute logo-content"></i>
     </div>
   </a>
   <a href="/nonasn" class="text-decoration-none">
-    <div class="card text-dark mx-3 my-2 d-flex flex-column justify-content-center position-relative">
+    <div class="card text-light bg-primary mx-3 my-2 d-flex flex-column justify-content-center position-relative">
       <h4 class="card-title ps-3">Non ASN</h4>
-      <h4 class="text-muted ps-3">{{ $nonasn }}</h4>
+      <h4 class="text-light ps-3">{{ $nonasn }}</h4>
       <i class="fa-solid fa-users position-absolute logo-content"></i>
     </div>
   </a>
   <a href="/rapat" class="text-decoration-none">
-    <div class="card text-dark mx-3 my-2 d-flex flex-column justify-content-center position-relative">
+    <div class="card text-light bg-primary mx-3 my-2 d-flex flex-column justify-content-center position-relative">
       <h4 class="card-title ps-3">Rapat</h4>
-      <h4 class="text-muted ps-3">{{ $rapat }}</h4>
+      <h4 class="text-light ps-3">{{ $rapat }}</h4>
       <i class="fa-solid fa-handshake position-absolute logo-content"></i>
     </div>
   </a>
   <a href="/notulensi" class="text-decoration-none">
-    <div class="card text-dark mx-3 my-2 d-flex flex-column justify-content-center position-relative">
+    <div class="card text-light bg-primary mx-3 my-2 d-flex flex-column justify-content-center position-relative">
       <h4 class="card-title ps-3">Notulensi</h4>
-      <h4 class="text-muted ps-3">{{ $notulen }}</h4>
+      <h4 class="text-light ps-3">{{ $notulen }}</h4>
       <i class="fa-solid fa-clipboard position-absolute logo-content"></i>
     </div>
   </a>
   <a href="/hasil" class="text-decoration-none">
-    <div class="card text-dark mx-3 my-2 d-flex flex-column justify-content-center position-relative">
+    <div class="card text-light bg-primary mx-3 my-2 d-flex flex-column justify-content-center position-relative">
       <h4 class="card-title ps-3">Hasil</h4>
-      <h4 class="text-muted ps-3">{{ $hasil }}</h4>
+      <h4 class="text-light ps-3">{{ $hasil }}</h4>
       <i class="fa-solid fa-envelope-circle-check position-absolute logo-content"></i>
     </div>
   </a>
   <a href="/jabatan" class="text-decoration-none">
-    <div class="card text-dark mx-3 my-2 d-flex flex-column justify-content-center position-relative">
+    <div class="card text-light bg-primary mx-3 my-2 d-flex flex-column justify-content-center position-relative">
       <h4 class="card-title ps-3">Jabatan</h4>
-      <h4 class="text-muted ps-3">{{ $jabatan }}</h4>
+      <h4 class="text-light ps-3">{{ $jabatan }}</h4>
       <i class="fa-solid fa-map-pin position-absolute logo-content"></i>
     </div>
   </a>
   <a href="/instansi" class="text-decoration-none">
-    <div class="card text-dark mx-3 my-2 d-flex flex-column justify-content-center position-relative">
+    <div class="card text-light bg-primary mx-3 my-2 d-flex flex-column justify-content-center position-relative">
       <h4 class="card-title ps-3">Instansi</h4>
-      <h4 class="text-muted ps-3">{{ $instansi }}</h4>
+      <h4 class="text-light ps-3">{{ $instansi }}</h4>
       <i class="fa-solid fa-house-user position-absolute logo-content"></i>
     </div>
   </a>
   <a href="/bidang" class="text-decoration-none">
-    <div class="card text-dark mx-3 my-2 d-flex flex-column justify-content-center position-relative">
+    <div class="card text-light bg-primary mx-3 my-2 d-flex flex-column justify-content-center position-relative">
       <h4 class="card-title ps-3">Bidang</h4>
-      <h4 class="text-muted ps-3">{{ $bidang }}</h4>
+      <h4 class="text-light ps-3">{{ $bidang }}</h4>
       <i class="fa-solid fa-user-tie position-absolute logo-content"></i>
     </div>
   </a>
@@ -82,5 +82,35 @@
     </div>
   </div>
 </div>
-@endif
-@endsection
+<div class="row">
+  <div class="col">
+    @if ($hasil)
+    <h1 class="h2 mb-5">Hasil</h1>
+    @for ($i = 0; $i <= count($hasil[0])-1; $i++)<a href="#" class="text-decoration-none">
+      <div class="card text-dark my-4 d-flex flex-column justify-content-center position-relative">
+        <h4 class="card-title text-dark ps-3">{{ $hasil[0][$i]->notulen }}</h4>
+        <a href="/hasil/download/{{ $hasil[0][$i]->id_hasil }}"
+          class="btn-secondary w-50 rounded mx-auto text-decoration-none" style="width: 200px; height:25px;">
+          <p class="text-center fw-bold">Download</p>
+        </a>
+      </div>
+      </a>
+      @endfor
+      @else
+      <h1 class="h2 mb-5">Hasil</h1>
+      @endif
+  </div>
+  <div class="col">
+    <h1 class="h2 mb-5">Rapat</h1>
+    @foreach ($rapat as $rpt)
+    <a href="/notulensi/create/" class="text-decoration-none">
+      <div class="card text-dark my-4 d-flex flex-column justify-content-center position-relative">
+        <h4 class="card-title mt-3 ps-3">Rapat {{ $rpt->keterangan }}</h4>
+        <h4 class="text-muted ps-3">{{ $rpt->tempat }}</h4>
+        <h5 class="text-muted mb-3 ps-3">{{ $rpt->jam }} - {{ $rpt->tanggal }}</h5>
+        <i class="fa-solid fa-handshake position-absolute logo-content"></i>
+      </div>
+    </a>
+    @endforeach
+  </div>
+</div> @endif @endsection
