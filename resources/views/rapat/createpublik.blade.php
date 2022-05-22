@@ -13,6 +13,10 @@
   @csrf
   <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
   <div class="mb-3">
+    <label for="penyelenggara" class="form-label">Penyelenggara</label>
+    <input type="text" class="form-control" id="penyelenggara" name="penyelenggara">
+  </div>
+  <div class="mb-3">
     <label for="tempat" class="form-label">Tempat</label>
     <input type="text" class="form-control" id="tempat" name="tempat">
   </div>
@@ -39,26 +43,7 @@
     <label for="keterangan" class="form-label">Keterangan</label>
     <input type="text" class="form-control" id="keterangan" name="keterangan">
   </div>
-  <div class="mb-3">
-    <label for="asn" class="form-label">Peserta ASN</label>
-    <select class="form-select form-select-sm mb-3" aria-label=".form-select-lg example" name="asn" disabled>
-      <option value="NULL" selected>Pilih Peserta</option>
-      @foreach ($asn as $asn)
-      <option value="{{ $asn -> id_asn }}">{{ $asn->nama }} - {{ $asn->instansi->nama_in }}</option>
-      @endforeach
-    </select>
-  </div>
-  <div class="mb-3">
-    <label for="asn" class="form-label">Peserta NON ASN</label>
-    <select class="form-select form-select-sm mb-3" aria-label=".form-select-lg example" name="non" disabled>
-      <option value="NULL" selected>Pilih Peserta</option>
-      @foreach ($nonasn as $non)
-      <option value="{{ $non -> id_non }}">{{ $non->nama }} - {{ $non->instansi->nama_in }}</option>
-      @endforeach
-    </select>
-  </div>
-
-
+  <input type="hidden" name="status" value="Publik">
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 @endsection

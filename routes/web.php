@@ -63,7 +63,7 @@ Route::put('nonasn/edit/proses/{id_non}', [NonasnController::class, 'update'])->
 Route::delete('nonasn/delete/{id_non}', [NonasnController::class, 'destroy'])->middleware('auth', 'cekAdmin');
 
 //RAPAT 
-Route::get('/rapat', [RapatController::class, 'index'])->name('rapat')->middleware('auth', 'cekAdmin');
+// Route::get('/rapat', [RapatController::class, 'index'])->name('rapat')->middleware('auth', 'cekAdmin');
 
 //PUBLIK
 Route::get('/publik', [RapatController::class, 'publik'])->name('publik')->middleware('auth', 'cekAdmin');

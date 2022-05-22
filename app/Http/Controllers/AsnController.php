@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\asn;
+use App\Models\User;
+use App\Models\bidang;
 use App\Models\jabatan;
 use App\Models\instansi;
-use App\Models\bidang;
-use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class AsnController extends Controller
 {
@@ -51,15 +52,34 @@ class AsnController extends Controller
      */
     public function store(Request $request)
     {
-        $validateData = $request->validate([
-            'user_id' => ['required'],
+        $request->validate([
+            'username' => ['required', 'min:3', 'max:255', 'unique:users'],
+            'password' => 'required|min:5|max:255',
+            'role' => '',
             'nama' => ['required', 'min:3', 'max:255'],
-            'nip' => ['required', 'min:3', 'max:255'],
-            'id_jabatan' => ['required'],
+            'nip' => ['min:3', 'max:255'],
+            'id_jabatan' => '',
             'id_instansi' => ['required'],
             'id_bidang' => ['required'],
         ]);
-        asn::create($validateData);
+        $validateData = ([
+            'username' => $request->username,
+            'password' => $request->password,
+            'role' => 'ASN'
+        ]);
+        $validateData['password'] = Hash::make($validateData['password']);
+
+        $cek = User::create($validateData);
+        $usernew = User::select('*')->where('username', '=', $validateData['username'])->first();
+        $validateDataASN = ([
+            'nama' => $request->nama,
+            'user_id' => $usernew->id,
+            'nip' => $request->nip,
+            'id_jabatan' => $request->id_jabatan,
+            'id_instansi' => $request->id_instansi,
+            'id_bidang' => $request->id_bidang,
+        ]);
+        asn::create($validateDataASN);
         return redirect('/asn')->with('success', 'pengguna baru berhasil ditambahkan!');
     }
 
@@ -104,7 +124,6 @@ class AsnController extends Controller
     {
 
         $data = asn::where('id_asn', $request->id_asn)->update([
-            'user_id' => $request->user_id,
             'id_instansi' => $request->id_instansi,
             'id_bidang' => $request->id_bidang,
             'nama' => $request->nama,

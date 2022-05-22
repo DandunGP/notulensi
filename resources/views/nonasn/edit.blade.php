@@ -14,16 +14,6 @@
   @method('put')
   @csrf
   <div class="mb-3">
-    <label for="username" class="form-label">Username</label>
-    <select class="form-select form-select-sm mb-3" aria-label=".form-select-lg example" name="user_id">
-      @foreach ($user as $us)
-      <option value="{{ $us -> id }}" @if ($us -> id == $dd -> user_id) selected
-
-        @endif >{{ $us->username }}</option>
-      @endforeach
-    </select>
-  </div>
-  <div class="mb-3">
     <label for="nama" class="form-label">nama</label>
     <input type="text" class="form-control" id="nama" name="nama" value="{{ $dd->nama }}">
   </div>

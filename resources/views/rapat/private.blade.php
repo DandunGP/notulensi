@@ -14,6 +14,7 @@
   <thead>
     <tr>
       <th class="col">No</th>
+      <th class="col">Penyelenggara</th>
       <th class="col">Tempat</th>
       <th class="col">Hari</th>
       <th class="col">Tanggal</th>
@@ -28,6 +29,7 @@
     @foreach ($rapat as $ra)
     <tr>
       <td>{{ $loop -> iteration }}</td>
+      <td>{{ $ra -> penyelenggara }}</td>
       <td>{{ $ra -> tempat }}</td>
       <td>{{ $ra -> hari }}</td>
       <td>{{ $ra -> tanggal }}</td>

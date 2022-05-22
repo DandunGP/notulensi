@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\User;
+use App\Models\bidang;
 use App\Models\nonasn;
 use App\Models\instansi;
-use App\Models\bidang;
-use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class NonasnController extends Controller
 {
@@ -48,13 +49,30 @@ class NonasnController extends Controller
      */
     public function store(Request $request)
     {
-        $validateData = $request->validate([
-            'user_id' => ['required'],
+        $request->validate([
+            'username' => ['required', 'min:3', 'max:255', 'unique:users'],
+            'password' => 'required|min:5|max:255',
+            'role' => '',
             'nama' => ['required', 'min:3', 'max:255'],
             'id_instansi' => ['required'],
             'id_bidang' => ['required'],
         ]);
-        nonasn::create($validateData);
+        $validateData = ([
+            'username' => $request->username,
+            'password' => $request->password,
+            'role' => 'NON ASN'
+        ]);
+        $validateData['password'] = Hash::make($validateData['password']);
+
+        $cek = User::create($validateData);
+        $usernew = User::select('*')->where('username', '=', $validateData['username'])->first();
+        $validateDataNonASN = ([
+            'nama' => $request->nama,
+            'user_id' => $usernew->id,
+            'id_instansi' => $request->id_instansi,
+            'id_bidang' => $request->id_bidang,
+        ]);
+        nonasn::create($validateDataNonASN);
         return redirect('/nonasn')->with('success', 'pengguna baru berhasil ditambahkan!');
     }
 
@@ -97,7 +115,6 @@ class NonasnController extends Controller
     public function update(Request $request, $id_non)
     {
         $data = nonasn::where('id_non', $request->id_non)->update([
-            'user_id' => $request->user_id,
             'id_instansi' => $request->id_instansi,
             'id_bidang' => $request->id_bidang,
             'nama' => $request->nama,

@@ -100,7 +100,7 @@ class NotulenController extends Controller
         $validateData['jam'] = $data->jam;
         $validateData['keterangan'] = $data->keterangan;
 
-        if ($validateData['status'] = 'Publish') {
+        if ($request->status == 'Publish') {
             $pdf = App::make('dompdf.wrapper');
             $pdf->loadHtml($validateData['isi']);
             $path = storage_path('app/public/file-hasil');
@@ -108,17 +108,18 @@ class NotulenController extends Controller
             $pdf->save($path . '/' . $fileName);
             $path2 = 'file-hasil/' . $fileName;
             notulen::create($validateData);
+            $data2 = Notulen::select('*')->where('file', '=', $validateData['file'])->first();
+            $hasil1 = [
+                'id_rapat' => $validateData['id_rapat'],
+                'id_notulen' => $data2->id_notulen,
+                'notulen' => $path2
+            ];
+            hasil::create($hasil1);
         } else {
             notulen::create($validateData);
             return redirect('/notulensi')->with('success', 'pengguna baru berhasil ditambahkan!');
         }
-        $data2 = Notulen::select('*')->where('file', '=', $validateData['file'])->first();
-        $hasil1 = [
-            'id_rapat' => $validateData['id_rapat'],
-            'id_notulen' => $data2->id_notulen,
-            'notulen' => $path2
-        ];
-        hasil::create($hasil1);
+
         return redirect('/notulensi')->with('success', 'pengguna baru berhasil ditambahkan!');
     }
 

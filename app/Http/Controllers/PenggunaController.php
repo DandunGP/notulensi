@@ -20,7 +20,7 @@ class PenggunaController extends Controller
         //     "title" => "Pengguna",
         //     "active" => "Pengguna"
         // ]);
-        $pengguna = User::all();
+        $pengguna = User::where('role', '=', 'Administrator')->get();
         return view('pengguna.index', compact('pengguna'), [
             "title" => "Pengguna",
             "active" => "Pengguna"
@@ -51,18 +51,12 @@ class PenggunaController extends Controller
         $validateData = $request->validate([
             'username' => ['required', 'min:3', 'max:255', 'unique:users'],
             'password' => 'required|min:5|max:255',
-            'role' => ['required']
+            'role' => 'Administrator'
         ]);
         $validateData['password'] = Hash::make($validateData['password']);
 
         $cek = User::create($validateData);
-        if ($cek->role == 'ASN') {
-            return redirect('/asn/create')->with('success', 'pengguna baru berhasil ditambahkan!');
-        } elseif ($cek->role == 'NON ASN') {
-            return redirect('/nonasn/create')->with('success', 'pengguna baru berhasil ditambahkan!');
-        } else {
-            return redirect('/pengguna')->with('success', 'pengguna baru berhasil ditambahkan!');
-        }
+        return redirect('/pengguna');
 
         // $add = new User;  
         // $add->username = $request->username;
@@ -81,7 +75,7 @@ class PenggunaController extends Controller
      */
     public function show($id_user)
     {
-        $data = User::select('*')->where('id_user', $id_user)->get();
+        $data = User::select('*')->where('id', $id_user)->get();
         return view('pengguna.edit', compact('data'), [
             "title" => "Pengguna",
             "active" => "Pengguna"
@@ -105,7 +99,7 @@ class PenggunaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id_user)
     {
         // User::where('id_user',$id)->update([
         //     'username' => 'required',
@@ -117,10 +111,9 @@ class PenggunaController extends Controller
         // $data->password = $request->password;
         // $data->role = $request->role;
         // $data->update();
-        $data = User::where('id_user', $request->id_user)->update([
+        $data = User::where('id', $request->id_user)->update([
             'username' => $request->username,
             'password' => Hash::make($request->password),
-            'role' => $request->role
         ]);
         return redirect('/pengguna');
     }
@@ -135,7 +128,7 @@ class PenggunaController extends Controller
     {
         // User::destroy($pengguna->id_user);
         // return redirect('/pengguna')->with('success', 'pengguna baru berhasil ditambahkan!');
-        $pengguna = User::where('id_user', $id_user)->delete();
+        $pengguna = User::where('id', $id_user)->delete();
         return redirect('/pengguna');
     }
 }

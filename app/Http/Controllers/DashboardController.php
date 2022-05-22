@@ -48,7 +48,7 @@ class DashboardController extends Controller
         if ($status == 'ASN') {
             $id_user = auth()->user()->id;
             $pengguna = asn::where('user_id', '=', $id_user)->first();
-            $rapat = Rapat::select('*')->where('id_asn', 'LIKE', '%' . $pengguna->nama . '%')->where('tanggal', '>=', Carbon::now())->get();
+            $rapat = Rapat::select('*')->where('id_asn', 'LIKE', '%' . $pengguna->nama . '%')->where('tanggal', '>=', Carbon::yesterday())->get();
             $rapat2 = Rapat::select('*')->where('id_asn', 'LIKE', '%' . $pengguna->nama . '%')->get();
             $arr = [];
             for ($x = 0; $x <= count($rapat2) - 1; $x++) {
@@ -59,14 +59,15 @@ class DashboardController extends Controller
                 'title' => 'Dashboard',
                 'active' => 'Dashboard',
                 'rapat' => $rapat,
-                'hasil' => $arr
+                'hasil' => $arr,
+                'asn' => $pengguna
             ]);
         }
 
         if ($status == 'NON ASN') {
             $id_user = auth()->user()->id;
             $pengguna = nonasn::where('user_id', '=', $id_user)->first();
-            $rapat = Rapat::select('*')->where('id_non', 'LIKE', '%' . $pengguna->nama . '%')->where('tanggal', '>=', Carbon::now())->get();
+            $rapat = Rapat::select('*')->where('id_non', 'LIKE', '%' . $pengguna->nama . '%')->where('tanggal', '>=', Carbon::yesterday())->get();
             $rapat2 = Rapat::select('*')->where('id_non', 'LIKE', '%' . $pengguna->nama . '%')->get();
             $arr = [];
             for ($x = 0; $x <= count($rapat2) - 1; $x++) {
@@ -77,7 +78,8 @@ class DashboardController extends Controller
                 'title' => 'Dashboard',
                 'active' => 'Dashboard',
                 'rapat' => $rapat,
-                'hasil' => $arr
+                'hasil' => $arr,
+                'nonasn' => $pengguna
             ]);
         }
     }

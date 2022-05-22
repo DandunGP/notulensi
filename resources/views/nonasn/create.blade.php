@@ -12,15 +12,6 @@
 <form method="POST" action="/nonasn/create/proses">
   @csrf
   <div class="mb-3">
-    <label for="role" class="form-label">Username</label>
-    <select class="form-select form-select-sm mb-3" aria-label=".form-select-lg example" name="user_id">
-      <option selected>Pilih Username</option>
-      @foreach ($username as $user)
-      <option value="{{ $user -> id }}">{{ $user->username }}</option>
-      @endforeach
-    </select>
-  </div>
-  <div class="mb-3">
     <label for="nama" class="form-label">Nama</label>
     <input type="text" class="form-control" id="nama" name="nama">
   </div>
@@ -42,6 +33,15 @@
       @endforeach
     </select>
   </div>
+  <div class="mb-3">
+    <label for="role" class="form-label">Username</label>
+    <input type="text" class="form-control" name="username">
+  </div>
+  <div class="mb-3">
+    <label for="role" class="form-label">Password</label>
+    <input type="password" class="form-control" name="password">
+  </div>
+
 
 
   <button type="submit" class="btn btn-primary">Submit</button>

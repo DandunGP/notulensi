@@ -13,6 +13,10 @@
   @csrf
   <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
   <div class="mb-3">
+    <label for="penyelenggara" class="form-label">Penyelenggara</label>
+    <input type="text" class="form-control" id="penyelenggara" name="penyelenggara">
+  </div>
+  <div class="mb-3">
     <label for="tempat" class="form-label">Tempat</label>
     <input type="text" class="form-control" id="tempat" name="tempat">
   </div>
@@ -55,6 +59,7 @@
       @endforeach
     </select>
   </div>
+  <input type="hidden" name="status" value="Private">
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 @endsection

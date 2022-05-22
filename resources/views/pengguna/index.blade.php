@@ -26,8 +26,8 @@
       <td>{{ $peng -> username }}</td>
       <td>{{ $peng -> role }}</td>
       <td>
-        <a href="pengguna/tampil/{{ $peng->id_user }}" class="badge btn-warning"><span data-feather="edit"></span> </a>
-        <form action="pengguna/delete/{{ $peng->id_user }}" method="post" class="d-inline">
+        <a href="pengguna/tampil/{{ $peng->id }}" class="badge btn-warning"><span data-feather="edit"></span> </a>
+        <form action="pengguna/delete/{{ $peng->id }}" method="post" class="d-inline">
           @method('delete')
           @csrf
           <button class="badge btn-danger border-0" onclick="return confirm('Are you sure?')"><span

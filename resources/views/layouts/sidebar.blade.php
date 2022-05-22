@@ -18,13 +18,21 @@
               Dashboard
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link {{ ($active === 'Pengguna') ? 'active' : ''}}" href="/pengguna">
+          <div class="dropdown">
+            <button
+              class="nav-link bg-light position-relative d-flex align-items-center border-0 dropdown-toggle {{ ($active === 'Pengguna') ? 'active' : ''}}"
+              type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
               <span data-feather="users"></span>
               Pengguna
-            </a>
-          </li>
-          <li class="nav-item">
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+              <li><a class="dropdown-item" href="/pengguna">Admin</a></li>
+              <li><a class="dropdown-item" href="/asn">ASN</a></li>
+              <li><a class="dropdown-item" href="/nonasn">Non ASN</a></li>
+            </ul>
+          </div>
+
+          {{-- <li class="nav-item">
             <a class="nav-link {{ ($active === 'ASN') ? 'active' : ''}}" href="/asn">
               <span data-feather="users"></span>
               ASN
@@ -35,13 +43,25 @@
               <span data-feather="users"></span>
               Non ASN
             </a>
-          </li>
-          <li class="nav-item">
+          </li> --}}
+          {{-- <li class="nav-item">
             <a class="nav-link {{ ($active === 'Rapat') ? 'active' : ''}}" href="/rapat">
               <span data-feather="briefcase"></span>
               Rapat
             </a>
-          </li>
+          </li> --}}
+          <div class="dropdown">
+            <button
+              class="nav-link bg-light position-relative d-flex align-items-center border-0 dropdown-toggle {{ ($active === 'Rapat') ? 'active' : ''}}"
+              type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+              <span data-feather="briefcase"></span>
+              Rapat
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+              <li><a class="dropdown-item" href="/publik">Publik</a></li>
+              <li><a class="dropdown-item" href="/private">Private</a></li>
+            </ul>
+          </div>
           <li class="nav-item">
             <a class="nav-link {{ ($active === 'Notulensi') ? 'active' : ''}}" href="/notulensi">
               <span data-feather="file-text"></span>

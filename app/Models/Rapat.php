@@ -13,7 +13,7 @@ class Rapat extends Model
 {
     use HasFactory;
     protected $fillable = ([
-        'id_rapat', 'user_id', 'id_asn', 'id_non', 'tempat', 'hari', 'tanggal', 'jam', 'keterangan'
+        'id_rapat', 'user_id', 'id_asn', 'id_non', 'tempat', 'hari', 'tanggal', 'jam', 'status', 'keterangan', 'penyelenggara'
     ]);
 
     public function users()

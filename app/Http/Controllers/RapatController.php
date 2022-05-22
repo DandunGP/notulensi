@@ -30,7 +30,7 @@ class RapatController extends Controller
      */
     public function publik()
     {
-        $rapat = Rapat::all()->where('id_asn', NULL);
+        $rapat = Rapat::all()->where('status', '=', 'Publik');
         return view('rapat.publik', compact('rapat'), [
             "title" => "Rapat",
             "active" => "Rapat"
@@ -44,7 +44,7 @@ class RapatController extends Controller
      */
     public function private()
     {
-        $rapat = Rapat::all()->whereNotNull('id_asn');
+        $rapat = Rapat::all()->where('status', '=', 'Private');
         return view('rapat.private', compact('rapat'), [
             "title" => "Rapat",
             "active" => "Rapat"
@@ -93,16 +93,29 @@ class RapatController extends Controller
     {
         $validateData = $request->validate([
             'user_id' => ['required'],
+            'penyelenggara' => ['required'],
             'tempat' => ['required'],
             'hari' => ['required'],
             'tanggal' => ['required'],
             'jam' => ['required'],
             'keterangan' => ['required'],
             'id_asn' => '',
-            'id_non' => ''
+            'id_non' => '',
+            'status' => ['required']
         ]);
-        $validateData['id_asn'] = null;
-        $validateData['id_non'] = null;
+        $asn = asn::select('nama')->get();
+        $arr = [];
+        for ($i = 0; $i <= count($asn) - 1; $i++) {
+            $arr[] = $asn[$i]->nama;
+        }
+
+        $non = nonasn::select('nama')->get();
+        $arr2 = [];
+        for ($i = 0; $i <= count($non) - 1; $i++) {
+            $arr2[] = $non[$i]->nama;
+        }
+        $validateData['id_asn'] = implode(',', $arr);
+        $validateData['id_non'] = implode(',', $arr2);
         rapat::create($validateData);
         return redirect('/publik')->with('success', 'pengguna baru berhasil ditambahkan!');
     }
@@ -110,15 +123,16 @@ class RapatController extends Controller
     public function storeprivate(Request $request)
     {
         $validateData = $request->validate([
+            'penyelenggara' => ['required'],
             'user_id' => ['required'],
-            'id_asn' => ['required'],
-            'id_non' => ['required'],
+            'id_asn' => '',
+            'id_non' => '',
             'tempat' => ['required'],
             'hari' => ['required'],
             'tanggal' => ['required'],
             'jam' => ['required'],
             'keterangan' => ['required'],
-
+            'status' => ['required']
         ]);
         $validateData['id_asn'] = json_encode($request->id_asn);
         $validateData['id_non'] = json_encode($request->id_non);
@@ -218,7 +232,6 @@ class RapatController extends Controller
             'tanggal' => ['required'],
             'jam' => ['required'],
             'keterangan' => ['required'],
-
         ]);
 
         $validateData['id_asn'] = json_encode($request->id_asn);
